@@ -45,7 +45,13 @@ services:
       - ./plugins:/var/www/html/wp-content/plugins:Z
       - ./themes:/var/www/html/wp-content/themes:Z
       - ./uploads:/var/www/html/wp-content/uploads:Z
-    entrypoint: ["wp", "--path=/var/www/html", "--allow-root"]
+    command: >
+      /bin/sh -c '
+      sleep 10;
+      wp core install --path="/var/www/html" --url="http://localhost:8080" --title="Local Wordpress By Podman" --admin_user=admin --admin_password=admin191 --admin_email=demoadmin@bar.com;
+      wp plugin install woocommerce --activate;
+      wp theme install blocksy --activate;
+      '
 
 volumes:
   shop_db: {}
